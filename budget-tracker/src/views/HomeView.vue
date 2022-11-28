@@ -32,7 +32,6 @@
         </div>
       </div>
       <b-container fluid v-if="showIncomeAndExpenses == true">
-        <!--<p class="mt-3">Current Page: {{ currentPage }}</p>-->
         <b-row style="margin-bottom: 5px">
           <b-col lg="8" class="my-1">
             <b-form-group style="float: right; width: 50%">
