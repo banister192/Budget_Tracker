@@ -1,0 +1,54 @@
+.gradle
+/build/
+/bin/
+gradle/wrapper/gradle-wrapper.jar
+.DS_Store
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+deploy/scripts/out
+deploy/templates/jcl/out
+deploy/config/local.ts
+node_modules
+*.so
+user-zowe-api.json
+lastJob.json
+zowe-api-dev/zowedev-zowe-api-dev-*.tgz
+zowe-rest-api-sample-spring/build.gradle-orig
+zowe-rest-api-commons-spring/.version
+/package-lock.json
+key.tar
+.key
+.lock-session
+unlock.out
+zowe-rest-api-sample-spring/config/ca*/
+/*.jar
+zowe-rest-api-sample-spring/*.zip
+.zowe-api-dev/
+cov-int/
+zowe-rest-api-sample-kotlin-spring/bin/
+cov-int.tgz
