@@ -13,6 +13,7 @@
       </b-navbar-nav>
       <b-navbar-nav v-if="showDefault === 'user'" class="ms-auto">
         <b-nav-item class="underlined" to="/modal">User</b-nav-item>
+        <b-nav-item class="underlined" to="/import">Import</b-nav-item>
         <b-nav-item class="underlined" to="/statistic">Statistic</b-nav-item>
         <b-nav-item class="underlined" to="/profile">Profile</b-nav-item>
         <b-nav-item class="last-item underlined" @click="logout">Logout</b-nav-item>
