@@ -26,6 +26,7 @@
             accept=".csv"
             placeholder="Choose a CSV file..."
             drop-placeholder="Drop file here..."
+            style="margin-top: 10px;"
             @change="importCSV"
           ></b-form-file>
           <!--<b-button class="btn btn-lg btg-dark btn-block btn-import-custom" type="submit" name="import">Submit</b-button>-->
