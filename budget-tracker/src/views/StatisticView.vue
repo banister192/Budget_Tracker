@@ -1,7 +1,6 @@
 <template>
   <div id="contentContainer" class="signupcontentContainer container rounded-lg mt-3 shadow-lg p-3 mb-5 bg-white rounded">
     <h2>Statistic:</h2>
-    <br />
     <div>
       <b-row>
         <b-col>
@@ -95,6 +94,19 @@ export default {
     };
   },
   async mounted() {
+    // eslint-disable-next-line no-unused-vars
+    const responseUser = await this.$axios.get(this.$apiUrl + "/auth/getUser", this.jwtConfig).then((responseUser) => {
+      this.user = responseUser.data;
+      this.email = this.user.email;
+      this.firstName = this.user.firstName;
+      this.lastName = this.user.lastName;
+      this.name = this.user.firstName + " " + this.user.lastName;
+      if (this.user.admin == true) {
+        this.userType = "ADMIN";
+      } else {
+        this.userType = "USER";
+      }
+    });
     //var date = new Date();
     //var month = date.getMonth() + 1;
     await this.$axios

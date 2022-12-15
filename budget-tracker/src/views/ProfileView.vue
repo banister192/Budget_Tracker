@@ -93,6 +93,9 @@
           <b-form-file @change="uploadImage()" v-model="newImage" id="imageUploadInput" class="form-file-upload" accept=".jpg, .png" placeholder="Choose an image..." />
         </b-col>
       </b-form>
+      <div v-if="showReturnButton == true">
+        <b-button @click="triggerReturn()" class="btn btn-lg btg-dark btn-block btn-return-custom" name="return">Return</b-button>
+      </div>
     </div>
     <ModalMain :title="modalTitleText" :body="modalBodyText" ref="modalName" />
   </div>
@@ -118,6 +121,7 @@ export default {
       imgBase64: "",
       showSuccess: false,
       showButtons: true,
+      showReturnButton: false,
       showChangePassword: false,
       showUploadImage: false,
       showEditData: false,
@@ -166,11 +170,19 @@ export default {
       this.showUploadImage = false;
       this.showEditData = false;
       this.showButtons = true;
+      this.showReturnButton = false;
       setTimeout(() => (this.showSuccess = false), 1500);
     },
     triggerModal(modalBody) {
       this.modalBodyText = modalBody;
       this.$refs.modalName.openModal();
+    },
+    triggerReturn() {
+      this.showChangePassword = false;
+      this.showUploadImage = false;
+      this.showEditData = false;
+      this.showButtons = true;
+      this.showReturnButton = false;
     },
     getImgUrl(profilePicture) {
       var images = require.context("../assets/", true);
@@ -181,6 +193,7 @@ export default {
       this.showButtons = false;
       this.showUploadImage = false;
       this.showEditData = false;
+      this.showReturnButton = true;
     },
     editData() {
       if (this.newEmail == "") {
@@ -204,7 +217,7 @@ export default {
         )
         .then((response) => {
           if (response.status === 200) {
-            if(this.email != this.newEmail){
+            if (this.email != this.newEmail) {
               this.logout();
             }
             this.email = this.newEmail;
@@ -268,6 +281,7 @@ export default {
       this.showButtons = false;
       this.showChangePassword = false;
       this.showEditData = false;
+      this.showReturnButton = true;
     },
     editDataInit() {
       this.newEmail = this.email;
@@ -277,6 +291,7 @@ export default {
       this.showButtons = false;
       this.showChangePassword = false;
       this.showUploadImage = false;
+      this.showReturnButton = true;
     },
     async uploadImage() {
       const file = document.querySelector("#imageUploadInput").files[0];
@@ -293,18 +308,19 @@ export default {
           this.base64Picture = true;
           this.showButtons = true;
           this.showUploadImage = false;
+          this.showReturnButton = false;
         });
       };
       reader.readAsDataURL(file);
     },
     redirectAfterLogout() {
-      setTimeout(() => (this.$router.push("/login")), 1500);
+      setTimeout(() => this.$router.push("/login"), 1500);
     },
     logout() {
       localStorage.removeItem("token");
       localStorage.removeItem("token_expiration_date");
       localStorage.removeItem("userType");
-      localStorage.removeItem("userId");      
+      localStorage.removeItem("userId");
       this.redirectAfterLogout();
     },
   },
@@ -382,5 +398,10 @@ img:hover {
 
 .form-file-upload:hover {
   cursor: pointer;
+}
+
+.btn-return-custom {
+  margin-top: 10px;
+  background-color: grey !important;
 }
 </style>
