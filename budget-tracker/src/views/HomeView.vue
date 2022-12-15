@@ -79,7 +79,6 @@
           label-sort-clear=""
           :filter="filter"
           :filter-function="filterFunction"
-          @row-clicked="onRowClicked"
           @filtered="onFiltered"
         ></b-table>
         <b-pagination

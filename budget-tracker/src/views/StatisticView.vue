@@ -7,7 +7,7 @@
           <b-row class="lowerRow">
             <b-col>
               <label for="firtname" class="disabled-input-show">Name:</label>
-          <b-form-input v-model="name" type="text" class="form-control" id="name" name="name" placeholder="Name" disabled />
+              <b-form-input v-model="name" type="text" class="form-control" id="name" name="name" placeholder="Name" disabled />
             </b-col>
             <b-col>
               <label for="email" label-align="left" class="disabled-input-show">E-Mail:</label>
@@ -18,7 +18,22 @@
               <b-form-input v-model="userType" type="text" class="form-control" id="usertype" name="usertype" placeholder="Usertype" disabled />
             </b-col>
           </b-row>
-          <b-table id="my-table" :items="statisticTable" :fields="fieldsStatistic" :per-page="perPage" :current-page="currentPage" striped responsive small></b-table>
+          <b-table
+            id="my-table"
+            :items="statisticTable"
+            :fields="fieldsStatistic"
+            :per-page="perPage"
+            :current-page="currentPage"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
+            :show-sort-icons="true"
+            striped
+            responsive
+            small
+            label-sort-asc=""
+            label-sort-desc=""
+            label-sort-clear=""
+          ></b-table>
           <b-pagination
             class="customPagination"
             v-model="currentPage"
@@ -77,13 +92,15 @@ export default {
       perPage2: 12,
       currentPage: 1,
       currentPage2: 1,
+      sortBy: "month",
+      sortDesc: true,
       statisticTable: [],
       abosTable: [],
       fieldsStatistic: [
-        { key: "month", label: "Month" },
-        { key: "income", label: "Income", formatter: this.formatMoney },
-        { key: "expenses", label: "Expenses", formatter: this.formatMoney },
-        { key: "total", label: "Total", formatter: this.formatMoney },
+        { key: "month", label: "Month", sortable: true },
+        { key: "income", label: "Income", sortable: true, formatter: this.formatMoney },
+        { key: "expenses", label: "Expenses", sortable: true, formatter: this.formatMoney },
+        { key: "total", label: "Total", sortable: true, formatter: this.formatMoney },
       ],
       fieldsAbos: [
         { key: "name", label: "Name" },
@@ -139,7 +156,7 @@ export default {
         var year = element.date.split("-")[0];
         var found = false;
         this.statisticTable.forEach((element2) => {
-          if (element2.month == month + "/" + year) {
+          if (element2.month == year + "/" + month) {
             found = true;
             if (element.type == "INCOME") {
               element2.income += element.amount;
@@ -152,14 +169,14 @@ export default {
         if (!found) {
           if (element.type == "INCOME") {
             this.statisticTable.push({
-              month: month + "/" + year,
+              month: year + "/" + month,
               income: element.amount,
               expenses: 0,
               total: element.amount,
             });
           } else {
             this.statisticTable.push({
-              month: month + "/" + year,
+              month: year + "/" + month,
               income: 0,
               expenses: element.amount,
               total: 0 - element.amount,

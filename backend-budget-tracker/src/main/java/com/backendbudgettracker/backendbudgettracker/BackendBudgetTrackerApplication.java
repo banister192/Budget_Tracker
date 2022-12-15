@@ -1190,6 +1190,14 @@ public class BackendBudgetTrackerApplication {
 		user4.setAdmin(false);
 		userRepository.save(user4);
 
+		User user5 = new User();
+		user5.setEmail("test@mail.at");
+		user5.setPassword(passwordEncoder.encode("test"));
+		user5.setFirstName("Test");
+		user5.setLastName("Test");
+		user5.setAdmin(false);
+		userRepository.save(user5);
+
 		Image img2 = new Image();
 		img2.setType(Type.USER);
 		img2.setExternalId(Long.parseLong("1"));
