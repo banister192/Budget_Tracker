@@ -1,9 +1,14 @@
 package com.backendbudgettracker.backendbudgettracker.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.backendbudgettracker.backendbudgettracker.entity.IncomeAndExpenses;
+import com.backendbudgettracker.backendbudgettracker.entity.IncomeAndExpenses.Category;
 import com.backendbudgettracker.backendbudgettracker.repository.IncomeAndExpensesRepository;
 import com.backendbudgettracker.backendbudgettracker.security.JwtHelper;
 
@@ -55,5 +61,72 @@ public class IncomeAndExpensesController {
         return null;
     }
 
+    /*
+     * @PostMapping("")
+     * public IncomeAndExpenses create(@RequestBody Map<String, String> body,
+     * HttpServletRequest request,
+     * HttpServletResponse response) throws IOException {
+     * Long userId = jwtHelper.getUserIdFromRequest(request);
+     * if (userId != null) {
+     * String title = body.get("name");
+     * Double amount = Double.parseDouble(body.get("amount"));
+     * String date = body.get("date");
+     * Category category = Category.OTHER;
+     * IncomeAndExpenses incomeAndExpenses = new IncomeAndExpenses();
+     * incomeAndExpenses.setUserId(userId);
+     * incomeAndExpenses.setTitle(title);
+     * incomeAndExpenses.setAmount(amount);
+     * incomeAndExpenses.setDate(Timestamp.valueOf(date));
+     * incomeAndExpenses.setCategory(category);
+     * if(amount > 0) {
+     * incomeAndExpenses.setType(IncomeAndExpenses.Type.INCOME);
+     * } else {
+     * incomeAndExpenses.setType(IncomeAndExpenses.Type.EXPENSE);
+     * }
+     * return incomeAndExpensesRepository.save(incomeAndExpenses);
+     * }
+     * response.sendError(401);
+     * return null;
+     * }
+     */
+
+    // create post request for multiple income and expenses
+    @PostMapping("")
+    public List<IncomeAndExpenses> create(@RequestBody List<Map<String, String>> body, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ParseException {
+        Long userId = jwtHelper.getUserIdFromRequest(request);
+        if (userId != null) {
+            List<IncomeAndExpenses> incomeAndExpensesList = new ArrayList<IncomeAndExpenses>();
+            for (Map<String, String> map : body) {
+                IncomeAndExpenses incomeAndExpenses = new IncomeAndExpenses();
+
+                String title = map.get("title");
+
+                NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+                Number number = format.parse(map.get("amount"));
+                double d = number.doubleValue();
+                if (d > 0) {
+                    incomeAndExpenses.setType(IncomeAndExpenses.Type.INCOME);
+                } else {
+                    incomeAndExpenses.setType(IncomeAndExpenses.Type.EXPENSE);
+                }
+                if (d < 0) {
+                    d = d * -1;
+                }
+                Double amount = d;
+                Category category = Category.OTHER;
+                incomeAndExpenses.setUserId(userId);
+                incomeAndExpenses.setTitle(title);
+                incomeAndExpenses.setAmount(amount);
+                Timestamp date = Timestamp.valueOf(map.get("dateISO").substring(0, 10) + " 00:00:00");
+                incomeAndExpenses.setDate(date);
+                incomeAndExpenses.setCategory(category);
+                
+                incomeAndExpensesList.add(incomeAndExpenses);
+            }
+            return incomeAndExpensesRepository.saveAll(incomeAndExpensesList);
+        }
+        response.sendError(401);
+        return null;
+    }
 }
-        
