@@ -80,7 +80,7 @@
           </b-row>
           <b-row style="margin-top: 10px">
             <b-col>
-              <b-form-input v-model="newAmount" type="number" class="form-control" id="newAmount" name="newAmount" placeholder="Amount" />
+              <b-form-input v-model="newAmount" type="number" step="0.01" class="form-control" id="newAmount" name="newAmount" placeholder="Amount" />
               <label v-if="showErrorMessageNewAmount === true" class="error-label" for="newAmount">{{ errorMessageNewAmount }}</label>
             </b-col>
             <b-col>
