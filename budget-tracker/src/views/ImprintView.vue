@@ -30,7 +30,7 @@
         <small class="form-text" style="font-weight: 650; font-size: 20px">Branislav Vasic</small>
       </b-col>
       <b-col style="margin-right:50px;">
-        <small class="form-text" style="font-weight: 650; font-size: 20px">Morkoc Can</small>
+        <small class="form-text" style="font-weight: 650; font-size: 20px">Can Morkoc</small>
       </b-col>
     </b-row>
 

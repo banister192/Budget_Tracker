@@ -7,19 +7,16 @@
     <b-navbar-toggle class="navbar-toggle-button this-is-my-own-class" target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav v-if="showDefault == 'default'" class="ms-auto">
-        <b-nav-item class="underlined" to="/modal">Default</b-nav-item>
         <b-nav-item class="underlined" to="/login">Login</b-nav-item>
         <b-nav-item class="last-item underlined" to="/register">Register</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav v-if="showDefault === 'user'" class="ms-auto">
-        <b-nav-item class="underlined" to="/modal">User</b-nav-item>
         <b-nav-item class="underlined" to="/import">Import</b-nav-item>
         <b-nav-item class="underlined" to="/statistic">Statistic</b-nav-item>
         <b-nav-item class="underlined" to="/profile">Profile</b-nav-item>
         <b-nav-item class="last-item underlined" @click="logout">Logout</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav v-if="showDefault === 'admin'" class="ms-auto">
-        <b-nav-item class="underlined" to="/modal">Admin</b-nav-item>
         <b-nav-item class="underlined" to="/statistic">Statistic</b-nav-item>
         <b-nav-item class="underlined" to="/users">Users</b-nav-item>
         <b-nav-item class="underlined" to="/profile">Profile</b-nav-item>
