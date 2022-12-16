@@ -5,12 +5,18 @@
     <div class="form-signin" v-if="showForm">
       <!-- <b-form id="loginForm" @submit="login"> -->
       <b-form id="loginForm" v-on:submit.prevent="login">
-        <b-form-input type="text" class="form-control" v-model="username" name="username" placeholder="Username" autofocus /><br />
-        <b-form-input type="password" class="form-control" v-model="password" name="password" placeholder="Password" /><br />
+        <b-form-input type="email" class="form-control" v-model="username" name="username" placeholder="E-Mail" autofocus />
+        <label v-if="showErrorMessageUsername === true" class="error-label" for="username">{{ errorMessageUsername }}</label
+        ><br />
+        <b-form-input type="password" class="form-control" v-model="password" name="password" placeholder="Password" />
+        <label v-if="showErrorMessagePassword === true" class="error-label" for="password">{{ errorMessagePassword }}</label
+        ><br />
+        <!--
         <b-form-checkbox type="checkbox" v-model="safeit" name="safeit" value="true" unchecked-value="false"
           >Stay logged in!
-          <b-button class="btn btn-lg btg-dark btn-block" type="submit" name="login">Submit</b-button>
         </b-form-checkbox>
+        -->
+        <b-button class="btn btn-lg btg-dark btn-block" type="submit" name="login">Submit</b-button>
       </b-form>
       <br />
       <label>No Account yet? <router-link to="/register">Register Here!</router-link></label>
@@ -36,6 +42,10 @@ export default {
       username: "",
       password: "",
       safeit: false,
+      showErrorMessageUsername: false,
+      showErrorMessagePassword: false,
+      errorMessageUsername: "Error Message",
+      errorMessagePassword: "Error Message",
     };
   },
   methods: {
@@ -47,6 +57,9 @@ export default {
       setTimeout(() => this.$router.push("/profile"), 1000);
     },
     login() {
+      if (!this.validateInput(this.username, this.password)) {
+        return;
+      }
       this.$axios
         .post(this.$apiUrl + "/auth/login", {
           email: this.username,
@@ -64,11 +77,37 @@ export default {
           this.redirect();
         })
         .catch((error) => {
-          this.triggerModal("Login failed!");
+          //this.triggerModal("Login failed!");
+          this.triggerModal(error.response.data.status + ": " + error.response.data.error);
           console.log(error);
         });
     },
-  }
+    validateInput(email, password) {
+      let valid = true;
+      if (password === "") {
+        this.showErrorMessagePassword = true;
+        this.errorMessagePassword = "Password is required!";
+        valid = false;
+      } else {
+        this.showErrorMessagePassword = false;
+      }
+      if (email !== "") {
+        let emailRegex = new RegExp("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$");
+        if (!emailRegex.test(email)) {
+          this.showErrorMessageUsername = true;
+          this.errorMessageUsername = "Invalid email address!";
+          valid = false;
+        } else {
+          this.showErrorMessageUsername = false;
+        }
+      } else {
+        this.showErrorMessageUsername = true;
+        this.errorMessageUsername = "Username is required!";
+        valid = false;
+      }
+      return valid;
+    },
+  },
 };
 </script>
 
@@ -89,5 +128,11 @@ export default {
 h6 {
   color: green;
   margin-top: 20px;
+}
+
+.error-label {
+  margin-top: 0px;
+  margin-bottom: 10px;
+  color: red;
 }
 </style>

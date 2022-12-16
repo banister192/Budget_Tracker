@@ -198,7 +198,7 @@ export default {
               recurring = "Yearly";
             } else if (element.aboInterval == 4) {
               recurring = "Quarterly";
-            } else if (element.aboInterval == 6) {
+            } else if (element.aboInterval == 2) {
               recurring = "Half Yearly";
             }
             this.abosTable.push({

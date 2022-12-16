@@ -10,7 +10,7 @@
         </nav>
       </section>
     </div>
-    <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2)"> Alexander Goldinger, Anton Steiner, Branislav Vasic & Morkoc Can</div>
+    <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2)"> Alexander Goldinger, Anton Steiner, Branislav Vasic & Can Morkoc</div>
   </footer>
 </template>
 

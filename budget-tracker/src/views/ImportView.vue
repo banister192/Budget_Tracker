@@ -17,6 +17,7 @@
         </div>
       </div>
       <div class="form-signin" v-if="showForm">
+        <h5 class="text-center">Select a CSV file to import</h5>
         <!--<b-form id="importForm" v-on:submit.prevent="importCSV">-->
         <b-form id="importForm">
           <b-form-select v-model="selected" :options="options"></b-form-select>
@@ -26,13 +27,18 @@
             accept=".csv"
             placeholder="Choose a CSV file..."
             drop-placeholder="Drop file here..."
-            style="margin-top: 10px;"
+            style="margin-top: 10px"
             @change="importCSV"
           ></b-form-file>
           <!--<b-button class="btn btn-lg btg-dark btn-block btn-import-custom" type="submit" name="import">Submit</b-button>-->
         </b-form>
+        <br />
+        <h5 class="text-center">OR</h5>
+        <br />
+        <b-button @click="initManualImport()" class="btn btn-lg btg-dark btn-block" name="return">Create MANUAL</b-button>
       </div>
       <div v-if="showTable">
+        <b-button @click="postToBackend()" class="btn btn-lg btg-dark btn-block btn-import-custom-table" name="return">POST</b-button>
         <b-table
           id="my-table"
           :items="parsedJSON"
@@ -62,7 +68,41 @@
           pills
           align="center"
         ></b-pagination>
-        <b-button @click="postToBackend()" class="btn btn-lg btg-dark btn-block btn-return-custom" name="return">POST</b-button>
+      </div>
+
+      <div class="form-signin" v-if="showManualForm">
+        <b-form id="signupForm" v-on:submit.prevent="manualImport">
+          <b-row>
+            <b-col>
+              <b-form-input v-model="newTitle" type="text" class="form-control" id="newTitle" name="newTitle" placeholder="Title" autofocus />
+              <label v-if="showErrorMessageNewTitle === true" class="error-label" for="newTitle">{{ errorMessageNewTitle }}</label>
+            </b-col>
+          </b-row>
+          <b-row style="margin-top: 10px">
+            <b-col>
+              <b-form-input v-model="newAmount" type="number" class="form-control" id="newAmount" name="newAmount" placeholder="Amount" />
+              <label v-if="showErrorMessageNewAmount === true" class="error-label" for="newAmount">{{ errorMessageNewAmount }}</label>
+            </b-col>
+            <b-col>
+              <b-form-datepicker v-model="newDate" type="date" class="form-control" id="newDate" name="newDate" placeholder="Date" />
+              <label v-if="showErrorMessageNewDate === true" class="error-label" for="newDate">{{ errorMessageNewDate }}</label>
+            </b-col>
+          </b-row>
+          <b-row style="margin-top: 10px">
+            <b-col cols="6">
+              <b-form-select v-model="selectedManualImportCategory" :options="optionsManualImportCategory"></b-form-select>
+              <label v-if="showErrorMessageNewCategory === true" class="error-label" for="newCategory">{{ errorMessageNewCategory }}</label>
+            </b-col>
+            <b-col>
+              <b-form-checkbox v-model="newIsAbo" style="border: 0" class="form-control" id="newIsAbo" name="newIsAbo" placeholder="Date">Is an Abo</b-form-checkbox>
+            </b-col>
+            <b-col>
+              <b-form-select v-model="selectedManualImportAbo" :options="optionsManualImportAbo"></b-form-select>
+              <label v-if="showErrorMessageNewAbo === true" class="error-label" for="newAbo">{{ errorMessageNewAbo }}</label>
+            </b-col>
+          </b-row>
+          <b-button class="btn btn-lg btg-dark btn-block btn-import-custom" type="submit" name="import">Submit</b-button>
+        </b-form>
       </div>
     </div>
     <ModalMain :title="modalTitleText" :body="modalBodyText" ref="modalName" />
@@ -87,10 +127,25 @@ export default {
       modalTitleText: "ERROR",
       modalBodyText: "",
       showSuccess: false,
+      //showForm: false,
       showForm: true,
       showTable: false,
       showLoading: false,
+      showManualForm: false,
+      //showManualForm: true,
+      showErrorMessageNewTitle: false,
+      showErrorMessageNewAmount: false,
+      showErrorMessageNewDate: false,
+      showErrorMessageNewCategory: false,
+      showErrorMessageNewAbo: false,
+      errorMessageNewTitle: "",
+      errorMessageNewAmount: "",
+      errorMessageNewDate: "",
+      errorMessageNewCategory: "",
+      errorMessageNewAbo: "",
       selected: null,
+      selectedManualImportCategory: null,
+      selectedManualImportAbo: null,
       rows: 0,
       perPage: 14,
       currentPage: 1,
@@ -102,6 +157,31 @@ export default {
         { value: "bankAustria", text: "Bank Austria" },
         { value: "raiffeisen", text: "Raiffeisen" },
       ],
+      optionsManualImportCategory: [
+        { value: null, text: "Please select a Category" },
+        { value: "FOOD", text: "Food" },
+        { value: "CLOTHES", text: "Clothes" },
+        { value: "ENTERTAINMENT", text: "Entertainment" },
+        { value: "HOUSING", text: "Housing" },
+        { value: "TRANSPORTATION", text: "Transportation" },
+        { value: "HEALTH", text: "Health" },
+        { value: "EDUCATION", text: "Education" },
+        { value: "SAVINGS", text: "Savings" },
+        { value: "SALARY", text: "Salary" },
+        { value: "OTHER", text: "Other" },
+      ],
+      optionsManualImportAbo: [
+        { value: null, text: "Select Abo Interval" },
+        { value: 12, text: "Monthly" },
+        { value: 4, text: "Quarterly" },
+        { value: 2, text: "Half Yearly" },
+        { value: 1, text: "Yearly" },
+      ],
+      newTitle: "",
+      newAmount: "",
+      newDate: "",
+      newIsAbo: false,
+      newCategory: "",
       parsedJSON: [],
       parseConfig: [],
       file: null,
@@ -134,6 +214,8 @@ export default {
       this.showSuccess = true;
       this.showTable = false;
       this.showLoading = false;
+      this.showForm = false;
+      this.showManualForm = false;
       setTimeout(() => this.$router.push("/"), 1000);
     },
     triggerModal(modalBody) {
@@ -147,6 +229,74 @@ export default {
         month: "2-digit",
         day: "2-digit",
       });
+    },
+    initManualImport() {
+      this.showForm = false;
+      this.showManualForm = true;
+    },
+    manualImport() {
+      this.showErrorMessageNewTitle = false;
+      this.showErrorMessageNewAmount = false;
+      this.showErrorMessageNewDate = false;
+      this.showErrorMessageNewCategory = false;
+      this.showErrorMessageNewAbo = false;
+      if (this.checkManualImportForm()) {
+        this.showLoading = true;
+        this.showManualForm = false;
+        this.$axios
+          .post(
+            this.$apiUrl + "/incomeAndExpenses/createSingle",
+            {
+              title: this.newTitle,
+              amount: this.newAmount,
+              date: this.newDate,
+              category: this.selectedManualImportCategory,
+              abo: this.newIsAbo,
+              aboInterval: this.selectedManualImportAbo,
+            },
+            this.jwtConfig
+          )
+          // eslint-disable-next-line no-unused-vars
+          .then((response) => {
+            this.showLoading = false;
+            this.showSuccess = true;
+            this.redirect();
+          })
+          .catch((error) => {
+            this.showLoading = false;
+            this.showForm = true;
+            this.triggerModal(error.response.data.message);
+          });
+      }
+    },
+    checkManualImportForm() {
+      let returnValue = true;
+      if (this.newTitle === "") {
+        this.showErrorMessageNewTitle = true;
+        this.errorMessageNewTitle = "Please enter a title";
+        returnValue = false;
+      }
+      if (this.newAmount === "") {
+        this.showErrorMessageNewAmount = true;
+        this.errorMessageNewAmount = "Please enter a amount";
+        returnValue = false;
+      }
+      if (this.newDate === "") {
+        this.showErrorMessageNewDate = true;
+        this.errorMessageNewDate = "Please enter a date";
+        returnValue = false;
+      }
+      if (this.selectedManualImportCategory === null) {
+        this.showErrorMessageNewCategory = true;
+        this.errorMessageNewCategory = "Please select a category";
+        returnValue = false;
+      }
+      if (this.newIsAbo === true && this.selectedManualImportAbo === null) {
+        this.showErrorMessageNewAbo = true;
+        this.errorMessageNewAbo = "Please select an abo interval";
+        returnValue = false;
+      }
+      return returnValue;
     },
     parseFile() {
       console.log(this.parseConfig);
@@ -287,7 +437,24 @@ export default {
 </script>
 
 <style scoped>
+h6 {
+  color: green;
+  margin-top: 20px;
+}
+
 .btn-import-custom {
   margin-top: 10px;
+}
+
+.btn-import-custom-table {
+  margin-bottom: 10px;
+}
+
+.error-label {
+  margin-top: 0px;
+  margin-left: 10px;
+  float: left;
+  margin-bottom: 10px;
+  color: red;
 }
 </style>
