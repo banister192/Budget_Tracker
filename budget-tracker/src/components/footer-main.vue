@@ -5,7 +5,8 @@
         <nav>
           <p class="footer-text d-flex justify-content-center">
             <span><router-link to="/imprint">Imprint</router-link></span>
-            <span><router-link to="/help">Help</router-link></span>
+            <span><router-link to="/help">FAQ</router-link></span>
+            <span @click="executeIntroJS()" style="margin-left: 4px;">Help</span>
           </p>
         </nav>
       </section>
@@ -15,8 +16,16 @@
 </template>
 
 <script>
+//import introJS from 'intro.js';
+import "intro.js/minified/introjs.min.css";
 export default {
   name: "FooterMain",
+  methods: {
+    executeIntroJS() {
+      const introJS = require("intro.js");
+      introJS.introJs().start();
+    },
+  },
 };
 </script>
 
@@ -27,8 +36,19 @@ export default {
   font-weight: 500;
 }
 
+.footer-text span {
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+}
+
 .footer-text a:hover {
   color: grey;
+}
+
+.footer-text span:hover {
+  color: grey;
+  cursor: pointer;
 }
 
 .footer-text {

@@ -1,11 +1,30 @@
 <template>
-  <div id="contentContainer" class="signupcontentContainer container rounded-lg mt-3 shadow-lg p-3 mb-5 bg-white rounded">
+  <div
+    id="contentContainer"
+    class="signupcontentContainer container rounded-lg mt-3 shadow-lg p-3 mb-5 bg-white rounded"
+    data-intro="On this page you can update your profile data"
+    data-step="1"
+  >
     <h6 v-if="showSuccess">Successfully...</h6>
     <div>
       <b-row>
         <b-col cols="4">
-          <img @click="uploadImageInit" v-if="base64Picture === false" alt="Profile Picture" :src="getImgUrl(imgPath)" />
-          <img @click="uploadImageInit" v-if="base64Picture === true" alt="Profile Picture" :src="imgBase64" />
+          <img
+            @click="uploadImageInit"
+            v-if="base64Picture === false"
+            alt="Profile Picture"
+            :src="getImgUrl(imgPath)"
+            data-intro="Click here to upload a new profile picture"
+            data-step="2"
+          />
+          <img
+            @click="uploadImageInit"
+            v-if="base64Picture === true"
+            alt="Profile Picture"
+            :src="imgBase64"
+            data-intro="Click here to upload a new profile picture"
+            data-step="2"
+          />
         </b-col>
         <b-col>
           <b-row class="lowerRow">
@@ -31,7 +50,16 @@
       <br />
       <b-row>
         <b-col>
-          <b-button v-if="showButtons === true" class="button-profile btn btn-lg btg-dark btn-block" type="submit" name="login" @click="editDataInit">Edit Data</b-button>
+          <b-button
+            v-if="showButtons === true"
+            class="button-profile btn btn-lg btg-dark btn-block"
+            type="submit"
+            name="login"
+            @click="editDataInit"
+            data-intro="Here you can edit the data of your profile"
+            data-step="3"
+            >Edit Data</b-button
+          >
         </b-col>
       </b-row>
       <b-row>
@@ -43,6 +71,8 @@
             type="submit"
             name="login"
             @click="editPassword"
+            data-intro="Change your password here with a few simple clicks"
+            data-step="4"
             >Change Password</b-button
           >
         </b-col>

@@ -1,6 +1,11 @@
 <template>
   <b-navbar class="fixed-top" toggleable="lg" type="dark" variant="dark">
-    <b-link class="navbar-brand" to="/" />
+    <b-link
+      class="navbar-brand"
+      to="/"
+      data-intro="Welcome to Cash Connaisseur! Your personal budget tracker. Click here to see the overview of your expenses and income!"
+      data-step="5"
+    />
     <b-navbar-nav class="me-auto">
       <b-nav-item class="text-typewriter-parent" to="/"><p class="text animation-typewriter">CASH CONNAISSEUR</p></b-nav-item>
     </b-navbar-nav>
@@ -11,10 +16,10 @@
         <b-nav-item class="last-item underlined" to="/register">Register</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav v-if="showDefault === 'user'" class="ms-auto">
-        <b-nav-item class="underlined" to="/import">Import</b-nav-item>
-        <b-nav-item class="underlined" to="/saving-goal">Saving Goal</b-nav-item>
-        <b-nav-item class="underlined" to="/statistic">Statistic</b-nav-item>
-        <b-nav-item class="underlined" to="/profile">Profile</b-nav-item>
+        <b-nav-item class="underlined" to="/import" data-intro="Click here to import data from a csv-file or create manual income/expenses" data-step="6">Import</b-nav-item>
+        <b-nav-item class="underlined" to="/saving-goal" data-intro="Add your own saving goal here and predict the future" data-step="7">Saving Goal</b-nav-item>
+        <b-nav-item class="underlined" to="/statistic" data-intro="See a statistical overview of your imported data" data-step="8">Statistic</b-nav-item>
+        <b-nav-item class="underlined" to="/profile" data-intro="See and update your profile data. You can also upload a nice picture here ;-)" data-step="9">Profile</b-nav-item>
         <b-nav-item class="last-item underlined" @click="logout">Logout</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav v-if="showDefault === 'admin'" class="ms-auto">
@@ -32,7 +37,7 @@
 <script>
 export default {
   name: "HeaderMain",
-  
+
   data() {
     return {
       showDefault: "default",
@@ -40,7 +45,7 @@ export default {
   },
   methods: {
     redirectAfterLogout() {
-      setTimeout(() => (this.$router.push("/login")), 1200);
+      setTimeout(() => this.$router.push("/login"), 1200);
     },
     logout() {
       localStorage.removeItem("token");
@@ -50,18 +55,18 @@ export default {
       this.showDefault = "default";
       document.getElementById("contentContainer").innerHTML = "";
       document.getElementById("contentContainer").innerHTML = "<h3>Logging out...</h3>";
-      
+
       this.redirectAfterLogout();
     },
     checkUserType() {
-      if(localStorage.getItem("userType") == null) {
+      if (localStorage.getItem("userType") == null) {
         this.showDefault = "default";
-      } else if(localStorage.getItem("userType") === "user") {
+      } else if (localStorage.getItem("userType") === "user") {
         this.showDefault = "user";
-      } else if(localStorage.getItem("userType") === "admin") {
+      } else if (localStorage.getItem("userType") === "admin") {
         this.showDefault = "admin";
       }
-    }
+    },
   },
   watch: {
     $route() {
@@ -70,7 +75,7 @@ export default {
   },
   mounted() {
     this.checkUserType();
-  }
+  },
 };
 </script>
 

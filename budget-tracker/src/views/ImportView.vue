@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="contentContainer" class="signupcontentContainer container rounded-lg mt-3 shadow-lg p-3 mb-5 bg-white rounded">
+    <div id="contentContainer" class="signupcontentContainer container rounded-lg mt-3 shadow-lg p-3 mb-5 bg-white rounded" data-intro="On this page, you can import data from a csv-file or create a manual income/expense" data-step="1">
       <h4 class="text-center">Import</h4>
       <h6 v-if="showSuccess">Import successfully...</h6>
       <br />
@@ -20,7 +20,7 @@
         <h5 class="text-center">Select a CSV file to import</h5>
         <!--<b-form id="importForm" v-on:submit.prevent="importCSV">-->
         <b-form id="importForm">
-          <b-form-select v-model="selected" :options="options"></b-form-select>
+          <b-form-select v-model="selected" :options="options" data-intro="Please select a bank ..." data-step="2"></b-form-select>
           <b-form-file
             id="csvUploadInput"
             name="file"
@@ -29,13 +29,14 @@
             drop-placeholder="Drop file here..."
             style="margin-top: 10px"
             @change="importCSV"
+            data-intro="... and choose a csv-file from your computer." data-step="3"
           ></b-form-file>
           <!--<b-button class="btn btn-lg btg-dark btn-block btn-import-custom" type="submit" name="import">Submit</b-button>-->
         </b-form>
         <br />
         <h5 class="text-center">OR</h5>
         <br />
-        <b-button @click="initManualImport()" class="btn btn-lg btg-dark btn-block" name="return">Create MANUAL</b-button>
+        <b-button @click="initManualImport()" class="btn btn-lg btg-dark btn-block" name="return" data-intro="Click this button to create a manual income/expense" data-step="4">Create MANUAL</b-button>
       </div>
       <div v-if="showTable">
         <b-button @click="postToBackend()" class="btn btn-lg btg-dark btn-block btn-import-custom-table" name="return">POST</b-button>

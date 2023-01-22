@@ -1,10 +1,15 @@
 <template>
-  <div id="contentContainer" class="signupcontentContainer container rounded-lg mt-3 shadow-lg p-3 mb-5 bg-white rounded">
+  <div
+    id="contentContainer"
+    class="signupcontentContainer container rounded-lg mt-3 shadow-lg p-3 mb-5 bg-white rounded"
+    data-intro="Here you have some advanced statistic for your income and expenses"
+    data-step="1"
+  >
     <h2>Statistic:</h2>
     <div>
       <b-row>
         <b-col>
-          <b-row class="lowerRow">
+          <b-row class="lowerRow" data-intro="Here is a short overview of your profile data" data-step="2">
             <b-col>
               <label for="firtname" class="disabled-input-show">Name:</label>
               <b-form-input v-model="name" type="text" class="form-control" id="name" name="name" placeholder="Name" disabled />
@@ -37,6 +42,8 @@
             label-sort-asc=""
             label-sort-desc=""
             label-sort-clear=""
+            data-intro="This is an overview over the past months"
+            data-step="3"
           ></b-table>
           <b-pagination
             class="customPagination"
@@ -48,8 +55,8 @@
             pills
             align="center"
           ></b-pagination>
-          <h4>Abos</h4>
-          <b-table id="my-table2" :items="abosTable" :fields="fieldsAbos" :per-page="perPage2" :current-page="currentPage2" striped responsive small></b-table>
+          <h4>Subscriptions</h4>
+          <b-table id="my-table2" :items="abosTable" :fields="fieldsAbos" :per-page="perPage2" :current-page="currentPage2" striped responsive small  data-intro="Here you can see your subscriptions" data-step="4"></b-table>
           <!--
           <b-pagination
             class="customPagination"

@@ -8,7 +8,7 @@
         <b-col>
           <h1 style="padding-right: 2%; padding-top: 20px">Expenses and Income</h1>
         </b-col>
-        <b-col cols="2" v-if="showIncomeAndExpenses == true">
+        <b-col cols="2" v-if="showIncomeAndExpenses == true" data-intro="Here you can see your overall balance and your recent month." data-step="2">
           <b-row>
             <label for="balance" class="disabled-input-show">Balance:</label>
             <b-form-input v-model="balance" type="text" class="form-control" id="balance" name="balance" placeholder="Balance" disabled />
@@ -35,7 +35,7 @@
         <b-row style="margin-bottom: 5px">
           <b-col lg="8" class="my-1">
             <b-form-group style="float: right; width: 50%">
-              <b-input-group size="sm">
+              <b-input-group size="sm" data-intro="Use the search function specific expenses and income easier." data-step="3">
                 <b-form-input id="filter-input" v-model="filterVarOne" type="search" placeholder="Type to Search" @change="toggleFilter"></b-form-input>
                 <b-input-group-append>
                   <b-button style="border: none !important" :disabled="!filterVarOne" @click="filterVarOne = ''">Clear</b-button>
@@ -43,7 +43,7 @@
               </b-input-group>
             </b-form-group>
           </b-col>
-          <b-col lg="4" class="my-1">
+          <b-col lg="4" class="my-1"  data-intro="Choose a category to filter your list." data-step="4">
             <b-form-select id="initial-sort-select" v-model="filterVarTwo" :options="filterOptions" size="sm" @change="toggleFilter"></b-form-select>
             <!--
             <b-pagination
@@ -80,6 +80,8 @@
           :filter="filter"
           :filter-function="filterFunction"
           @filtered="onFiltered"
+          data-intro="Here you can see all your expenses and income."
+          data-step="1"
         ></b-table>
         <b-pagination
           class="customPagination"

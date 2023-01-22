@@ -5,6 +5,7 @@
     <div class="form-signin" v-if="showForm">
       <!-- <b-form id="loginForm" @submit="login"> -->
       <b-form id="loginForm" v-on:submit.prevent="login">
+        <a href="http://example.com/"></a>
         <b-form-input type="email" class="form-control" v-model="username" name="username" placeholder="E-Mail" autofocus />
         <label v-if="showErrorMessageUsername === true" class="error-label" for="username">{{ errorMessageUsername }}</label
         ><br />
@@ -107,7 +108,7 @@ export default {
       }
       return valid;
     },
-  },
+  }
 };
 </script>
 

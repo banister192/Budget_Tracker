@@ -157,3 +157,7 @@ nav a.router-link-exact-active {
 .amountCustomClass {
   text-align: right;
 }
+
+.introjs-helperLayer {
+  opacity: 0.2;
+}

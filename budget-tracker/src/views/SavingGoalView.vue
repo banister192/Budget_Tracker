@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="contentContainer" class="signupcontentContainer container rounded-lg mt-3 shadow-lg p-3 mb-5 bg-white rounded">
+    <div id="contentContainer" class="signupcontentContainer container rounded-lg mt-3 shadow-lg p-3 mb-5 bg-white rounded" data-intro="On this page, you can calculate a saving goal. Just provide the amount you want to save." data-step="1">
       <h2>Saving Goal:</h2>
       <h6 v-if="showSuccess">Saved successfully...</h6>
       <br />
@@ -10,7 +10,7 @@
             <label for="title" class="disabled-input-show">Title:</label>
             <b-form-input v-model="title" type="text" class="form-control" id="title" name="title" placeholder="No Saving-Goal yet!" disabled />
           </b-col>
-          <b-col>
+          <b-col data-intro="This is the amount you need to save for your next goal" data-step="3">
             <label for="difference" label-align="left" class="disabled-input-show">Difference to Balance:</label>
             <b-form-input v-model="differenceToBalance" type="text" class="form-control" id="differenceToBalance" name="differenceToBalance" placeholder="difference To Balance" disabled />
           </b-col>
@@ -25,14 +25,14 @@
             <label for="amount" label-align="left" class="disabled-input-show">Amount:</label>
             <b-form-input v-model="amountToShow" type="text" class="form-control" id="amount" name="amount" placeholder="Amount" disabled />
           </b-col>
-          <b-col>
+          <b-col data-intro="This is the predicted date, when your goal will be reached" data-step="4">
             <label for="date" label-align="left" class="disabled-input-show">Estimated Finish Date:</label>
             <b-form-input v-model="finishDate" type="text" class="form-control" id="finishDate" name="finishDate" placeholder="Finish Date" disabled />
           </b-col>
         </b-row>
         <b-row class="lowerRow" v-if="showForm == false">
           <b-col>
-            <b-button @click="initSavingGoal()" class="btn btn-lg btg-dark btn-block" name="return">Create Saving Goal</b-button>
+            <b-button @click="initSavingGoal()" class="btn btn-lg btg-dark btn-block" name="return" data-intro="Click here to create a new saving goal." data-step="2">Create Saving Goal</b-button>
           </b-col>
         </b-row>
       </div>
