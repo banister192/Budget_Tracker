@@ -17,6 +17,10 @@
               <label for="status" label-align="left" class="disabled-input-show">Usertype:</label>
               <b-form-input v-model="userType" type="text" class="form-control" id="usertype" name="usertype" placeholder="Usertype" disabled />
             </b-col>
+            <b-col>
+              <label for="balance" label-align="left" class="disabled-input-show">Balance:</label>
+              <b-form-input v-model="balance" type="text" class="form-control" id="balance" name="balance" placeholder="Balance" disabled />
+            </b-col>
           </b-row>
           <b-table
             id="my-table"
@@ -83,9 +87,6 @@ export default {
       },
       incomeAndExpenses: [],
       balance: null,
-      balanceRaw: null,
-      balanceThisMonth: 0,
-      balanceThisMonthRaw: 0,
       rows: 0,
       rows2: 0,
       perPage: 12,
@@ -151,7 +152,13 @@ export default {
     },
     calculateStatisticTable() {
       this.statisticTable = [];
+      this.balance = 0;
       this.incomeAndExpenses.forEach((element) => {
+        if (element.type == "INCOME") {
+          this.balance += element.amount;
+        } else {
+          this.balance -= element.amount;
+        }
         var month = element.date.split("-")[1];
         var year = element.date.split("-")[0];
         var found = false;
@@ -210,6 +217,7 @@ export default {
           }
         }
       });
+      this.balance = this.balance.toFixed(2) + " €";
       this.rows = this.statisticTable.length;
     },
   },

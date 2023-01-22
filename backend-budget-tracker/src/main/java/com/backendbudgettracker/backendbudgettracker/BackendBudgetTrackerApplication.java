@@ -1188,6 +1188,7 @@ public class BackendBudgetTrackerApplication {
 		user4.setFirstName("Thomas");
 		user4.setLastName("Funser");
 		user4.setAdmin(false);
+		user4.setActive(false);
 		userRepository.save(user4);
 
 		User user5 = new User();

@@ -49,6 +49,16 @@ const routes = [
     path: "/import",
     name: "import",
     component: () => import(/* webpackChunkName: "imprint" */ "../views/ImportView.vue"),
+  },
+  {
+    path: "/saving-goal",
+    name: "saving-goal",
+    component: () => import(/* webpackChunkName: "imprint" */ "../views/SavingGoalView.vue"),
+  },
+  {
+    path: "/users",
+    name: "users",
+    component: () => import(/* webpackChunkName: "imprint" */ "../views/UsersView.vue"),
   }
 ];
 

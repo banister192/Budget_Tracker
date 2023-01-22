@@ -180,6 +180,27 @@ public class AuthController {
         return ResponseEntity.badRequest().build();
     }
 
+    @PostMapping(value = "/changeUserActiveById")
+    public ResponseEntity<User> changeUserActiveById(@RequestBody Map<String, String> params, HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        if (jwtHelper.getAdminFromRequest(request)) {
+            Optional<User> userOptional = userRepository.findById(Long.parseLong(params.get("id")));
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                if (user.getActive() == false) {
+                    user.setActive(true);
+                } else {
+                    user.setActive(false);
+                }
+                User updated = userRepository.save(user);
+                return ResponseEntity.ok(updated);
+            }
+            return ResponseEntity.badRequest().build();
+        }
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        return ResponseEntity.badRequest().build();
+    }
+
     @PostMapping(value = "/updateUserAsAdmin")
     public ResponseEntity<User> updateUserAsAdmin(@RequestBody Map<String, String> params, HttpServletRequest request,
             HttpServletResponse response) throws IOException {
